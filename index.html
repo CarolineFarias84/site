@@ -1,0 +1,425 @@
+<!--
+  ORGANOGRAMA — Companhia Águas de Joinville
+  ============================================
+  Este site tem estes arquivos, cada um com uma função:
+    - index.html    -> o texto e a estrutura do site (este arquivo)
+    - css/style.css -> as cores, tamanhos e o visual (o "design")
+    - js/script.js  -> o que faz os cards abrirem/fecharem e a busca funcionar
+    - assets/       -> imagens (logo)
+
+  PARA TROCAR TEXTOS (nomes de diretoria, gerência, coordenação):
+    Procure o texto exato aqui no arquivo (Ctrl+F ou Cmd+F) e troque.
+    Não precisa mexer no css/style.css nem no js/script.js pra isso.
+
+  PARA ADICIONAR UMA NOVA "GERÊNCIA" (aqueles cards que abrem e fecham):
+    Copie um bloco inteiro que começa em <article class="org-card" ...>
+    e termina em </article>, cole logo abaixo de outro dentro da mesma
+    seção, e troque os textos. Tem um exemplo comentado logo abaixo,
+    dentro da primeira seção (DIPRE).
+
+  PARA ADICIONAR UMA NOVA "DIRETORIA" (um bloco inteiro tipo DIPRE/DIREX):
+    Copie um bloco que começa em <section class="directorate" ...> e
+    termina em </section>, cole depois do </section> de outra diretoria,
+    e não esqueça de:
+      1) trocar a sigla (ex: "dipre") pelo id novo em 3 lugares dentro
+         do bloco copiado (procure por "dipre" com Ctrl+F pra achar todos)
+      2) adicionar um link novo pra ela no menu do topo e nos 4 quadrados
+         de atalho (ambos ficam logo no início do arquivo)
+-->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organograma 2026 | Companhia Águas de Joinville</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <!-- CABEÇALHO: logo, título "Organograma", data de atualização e o menu (DIPRE/DIREX/DIROP/DICAF) -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <!-- Pra trocar a logo: substitua o arquivo assets/logo-CAJ.png por outro com o mesmo nome -->
+      <a class="header-logo-link" href="https://www.aguasdejoinville.com.br" target="_blank" rel="noopener noreferrer" aria-label="Visitar o site da Companhia Águas de Joinville">
+        <img class="header-logo" src="assets/logo-CAJ.png" alt="Logotipo da Companhia Águas de Joinville">
+      </a>
+      <div class="brand-copy">
+        <h1>Organograma</h1>
+        <!-- Lembre de atualizar esta data sempre que o organograma mudar -->
+        <p>Atualização | Setembro 2026</p>
+      </div>
+      <!-- Menu do topo: cada link precisa apontar pro "id" da seção lá embaixo (ex: #dipre) -->
+      <nav class="main-nav" aria-label="Navegação das diretorias">
+        <a href="#dipre">DIPRE</a>
+        <a href="#direx">DIREX</a>
+        <a href="#dirop">DIROP</a>
+        <a href="#dicaf">DICAF</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- FAIXA AZUL: banner grande com o título "Estrutura organizacional" -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero-inner">
+      <p class="eyebrow">Companhia Águas de Joinville</p>
+      <h2 id="hero-heading">Estrutura organizacional</h2>
+      <p>Explore as diretorias, gerências e áreas da Companhia Águas de Joinville.</p>
+    </div>
+  </section>
+
+  <!-- 4 QUADRADOS DE ATALHO: mesma ideia do menu do topo, cada um pula pra sua seção -->
+  <nav class="quick-grid" aria-label="Acesso rápido às diretorias">
+    <a href="#dipre" class="quick-card">
+      <p class="quick-code">DIPRE</p>
+      <p class="quick-name">Diretoria da Presidência</p>
+    </a>
+    <a href="#direx" class="quick-card">
+      <p class="quick-code">DIREX</p>
+      <p class="quick-name">Diretoria de Expansão</p>
+    </a>
+    <a href="#dirop" class="quick-card">
+      <p class="quick-code">DIROP</p>
+      <p class="quick-name">Diretoria Operacional</p>
+    </a>
+    <a href="#dicaf" class="quick-card">
+      <p class="quick-code">DICAF</p>
+      <p class="quick-name">Diretoria Administrativa e Financeira</p>
+    </a>
+  </nav>
+
+  <main>
+    <!-- Barra de busca + botões "Expandir todas" / "Recolher todas" (isso já funciona sozinho, não precisa mexer) -->
+    <section class="tools" aria-label="Ferramentas do organograma">
+      <div class="search-wrap">
+        <label for="search-input">Localize uma área</label>
+        <div class="search-shell">
+          <i data-lucide="search" aria-hidden="true" width="18"></i>
+          <input id="search-input" type="search" autocomplete="off" placeholder="Busque por nome ou sigla">
+        </div>
+      </div>
+      <div class="controls">
+        <button class="control-button" type="button" id="expand-all">Expandir todas</button>
+        <button class="control-button" type="button" id="collapse-all">Recolher todas</button>
+      </div>
+    </section>
+
+    <!-- Mensagem que aparece só quando a busca não encontra nada. Não precisa mexer. -->
+    <div id="empty-state" class="empty-state" role="status">
+      <p>Nenhuma área encontrada para esta busca.</p>
+    </div>
+
+    <!-- ======================= SEÇÃO: DIPRE (Diretoria da Presidência) ======================= -->
+    <section id="dipre" class="directorate" data-section="dipre" aria-labelledby="dipre-heading">
+      <div class="directorate-head">
+        <div>
+          <div class="directorate-kicker">DIPRE</div>
+          <h2 id="dipre-heading">DIRETORIA DA PRESIDÊNCIA</h2>
+        </div>
+        <!-- Esse número é só texto, precisa ser atualizado manualmente se adicionar/remover uma área -->
+        <span class="section-count">8 áreas principais</span>
+      </div>
+      <div class="org-list">
+        <article class="org-card" data-search="Gerência de Faturamento e Gestão Comercial Coordenação de Micromedição e Leitura CML Coordenação de Fiscalização e Captação de Clientes CFC Coordenação de Faturamento e Gestão de Créditos CFG">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="briefcase" width="18"></i></span>
+            <span class="org-title">Gerência de Faturamento e Gestão Comercial</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Micromedição e Leitura | CML</div>
+            <div class="child-item">Coordenação de Fiscalização e Captação de Clientes | CFC</div>
+            <div class="child-item">Coordenação de Faturamento e Gestão de Créditos | CFG</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Secretaria de Governança Corporativa Gestão da Ouvidoria">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="briefcase" width="18"></i></span>
+            <span class="org-title">Secretaria de Governança Corporativa</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Gestão da Ouvidoria</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Escritório de Projetos e Processos Gestão de Processos PROC Gestão de Projetos PROJ">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="briefcase" width="18"></i></span>
+            <span class="org-title">Escritório de Projetos e Processos</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Gestão de Processos | PROC</div>
+            <div class="child-item">Gestão de Projetos | PROJ</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Assessoria Jurídica Coordenação de Gestão do Contencioso CGC Gestão de Serviços Jurídicos">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="scale" width="18"></i></span>
+            <span class="org-title">Assessoria Jurídica</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Gestão do Contencioso | CGC</div>
+            <div class="child-item">Gestão de Serviços Jurídicos</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Assessoria de Novos Negócios">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="briefcase" width="18"></i></span>
+            <span class="org-title">Assessoria de Novos Negócios</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+        </article>
+        <article class="org-card" data-search="Assessoria de Comunicação Relacionamento e Marketing Coordenação de Comunicação e Marketing CCM Coordenação de Experiência do Cliente CEC Supervisão de Responsabilidade Social Coordenação de Canais de Relacionamento CCR">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="megaphone" width="18"></i></span>
+            <span class="org-title">Assessoria de Comunicação Relacionamento e Marketing</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Comunicação e Marketing | CCM</div>
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Experiência do Cliente | CEC</div>
+              <div class="supervision-item">Supervisão de Responsabilidade Social</div>
+            </div>
+            <div class="child-item">Coordenação de Canais de Relacionamento | CCR</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Auditoria Interna">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="shield-check" width="18"></i></span>
+            <span class="org-title">Auditoria Interna</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+        </article>
+        <article class="org-card" data-search="Centro Integrado em Operações (CIOP) Coordenação de Gestão de Energia e Eficiência Energética CGE Coordenação de Controle Operacional CCO Coordenação de Otimização Hidráulica e Gestão de Perdas COP">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="activity" width="18"></i></span>
+            <span class="org-title">Centro Integrado em Operações (CIOP)</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Gestão de Energia e Eficiência Energética | CGE</div>
+            <div class="child-item">Coordenação de Controle Operacional | CCO</div>
+            <div class="child-item">Coordenação de Otimização Hidráulica e Gestão de Perdas | COP</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================= SEÇÃO: DIREX (Diretoria de Expansão) — mesmo padrão da seção acima ======================= -->
+    <section id="direx" class="directorate" data-section="direx" aria-labelledby="direx-heading">
+      <div class="directorate-head">
+        <div>
+          <div class="directorate-kicker">DIREX</div>
+          <h2 id="direx-heading">DIRETORIA DE EXPANSÃO</h2>
+        </div>
+        <span class="section-count">3 gerências</span>
+      </div>
+      <div class="org-list">
+        <article class="org-card" data-search="Gerência de Expansão GEX Coordenação de Projetos de Expansão 1 CPEX 1 Coordenação de Projetos de Expansão 2 CPEX 2 Coordenação de Projetos de Expansão 3 CPEX 3 Coordenação de Projetos de Expansão 4 CPEX 4 Coordenação de Planejamento e Projetos Complementares CPP Gestão Técnica">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="expand" width="18"></i></span>
+            <span class="org-title">Gerência de Expansão | GEX</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Projetos de Expansão 1 | CPEX 1</div>
+            <div class="child-item">Coordenação de Projetos de Expansão 2 | CPEX 2</div>
+            <div class="child-item">Coordenação de Projetos de Expansão 3 | CPEX 3</div>
+            <div class="child-item">Coordenação de Projetos de Expansão 4 | CPEX 4</div>
+            <div class="child-item">Coordenação de Planejamento e Projetos Complementares | CPP</div>
+            <div class="child-item">Gestão Técnica</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência de Qualidade e Meio Ambiente GQM Coordenação de Laboratório de Controle de Qualidade LCQ Coordenação de Planejamento e Controle Ambiental e Social CAS Coordenação de Gestão Ambiental CGA">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="leaf" width="18"></i></span>
+            <span class="org-title">Gerência de Qualidade e Meio Ambiente | GQM</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Laboratório de Controle de Qualidade | LCQ</div>
+            <div class="child-item">Coordenação de Planejamento e Controle Ambiental e Social | CAS</div>
+            <div class="child-item">Coordenação de Gestão Ambiental | CGA</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência de Melhoria de Infraestrutura GMI Coordenação de Melhorias e Estruturas CME Coordenação de Melhorias Operacionais e Serviços CMS Supervisão de Melhorias Operacionais e Serviços">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="construction" width="18"></i></span>
+            <span class="org-title">Gerência de Melhoria de Infraestrutura | GMI</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Melhorias e Estruturas | CME</div>
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Melhorias Operacionais e Serviços | CMS</div>
+              <div class="supervision-item">Supervisão de Melhorias Operacionais e Serviços</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================= SEÇÃO: DIROP (Diretoria Operacional) — mesmo padrão da seção acima ======================= -->
+    <section id="dirop" class="directorate" data-section="dirop" aria-labelledby="dirop-heading">
+      <div class="directorate-head">
+        <div>
+          <div class="directorate-kicker">DIROP</div>
+          <h2 id="dirop-heading">DIRETORIA OPERACIONAL</h2>
+        </div>
+        <span class="section-count">3 gerências</span>
+      </div>
+      <div class="org-list">
+        <article class="org-card" data-search="Gerência de Água Coordenação de Produção CPR Supervisão Estação ETA 2 Coordenação de Adução e Distribuição CAD Supervisão Operacional do SAA Sistema de Abastecimento de Água 1">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="droplets" width="18"></i></span>
+            <span class="org-title">Gerência de Água</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Produção | CPR</div>
+              <div class="supervision-item">Supervisão Estação - ETA (2)</div>
+            </div>
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Adução e Distribuição | CAD</div>
+              <div class="supervision-item">Supervisão Operacional do SAA - Sistema de Abastecimento de Água (1)</div>
+            </div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência de Esgoto Coordenação de Tratamento CTR Supervisão Estação ETE 2 Coordenação de Coleta e Transporte CCT Supervisão de Coleta e Transporte de Esgoto 1">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="waves" width="18"></i></span>
+            <span class="org-title">Gerência de Esgoto</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Tratamento | CTR</div>
+              <div class="supervision-item">Supervisão Estação - ETE (2)</div>
+            </div>
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Coleta e Transporte | CCT</div>
+              <div class="supervision-item">Supervisão de Coleta e Transporte de Esgoto (1)</div>
+            </div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência de Manutenção e Serviços Coordenação Eletromecânica CEM Supervisão de Manutenção Corretiva Eletromecânica 1 Coordenação de Manutenção de Redes e Ramais CMR Supervisão de Manutenção de Redes e Ramais 3 Supervisão de Serviços Comerciais 1 Coordenação de Melhorias Operacionais e Serviços CMS Supervisão de Melhorias Operacionais e Serviços 2 Coordenação de Fiscalização de Pavimentação CFP Coordenação de Planejamento e Gestão de Manutenção CPM">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="wrench" width="18"></i></span>
+            <span class="org-title">Gerência de Manutenção e Serviços</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="coord-group">
+              <div class="child-item">Coordenação Eletromecânica | CEM</div>
+              <div class="supervision-item">Supervisão de Manutenção Corretiva Eletromecânica (1)</div>
+            </div>
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Manutenção de Redes e Ramais | CMR</div>
+              <div class="supervision-item">Supervisão de Manutenção de Redes e Ramais (3)</div>
+              <div class="supervision-item">Supervisão de Serviços Comerciais (1)</div>
+            </div>
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Melhorias Operacionais e Serviços | CMS</div>
+              <div class="supervision-item">Supervisão de Melhorias Operacionais e Serviços (2)</div>
+            </div>
+            <div class="child-item">Coordenação de Fiscalização de Pavimentação | CFP</div>
+            <div class="child-item">Coordenação de Planejamento e Gestão de Manutenção | CPM</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================= SEÇÃO: DICAF (Diretoria Administrativa e Financeira) — mesmo padrão da seção acima ======================= -->
+    <section id="dicaf" class="directorate" data-section="dicaf" aria-labelledby="dicaf-heading">
+      <div class="directorate-head">
+        <div>
+          <div class="directorate-kicker">DICAF</div>
+          <h2 id="dicaf-heading">DIRETORIA ADMINISTRATIVA E FINANCEIRA</h2>
+        </div>
+        <span class="section-count">5 gerências</span>
+      </div>
+      <div class="org-list">
+        <article class="org-card" data-search="Gerência de Riscos Conformidade Controle Interno e Inovação Gestão de Riscos GPR Gestão da Conformidade GCE Gestão de Controle Interno da Gestão GCI Escritório de Inovação INOVACAJ">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="shield" width="18"></i></span>
+            <span class="org-title">Gerência de Riscos, Conformidade, Controle Interno e Inovação</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Gestão de Riscos | GPR</div>
+            <div class="child-item">Gestão da Conformidade | GCE</div>
+            <div class="child-item">Gestão de Controle Interno da Gestão | GCI</div>
+            <div class="child-item">Escritório de Inovação | INOVACAJ</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência de Gestão de Pessoas Coordenação de Desenvolvimento Humano e Organizacional DHO Coordenação de Remuneração e Carreira CRC Coordenação de Saúde e Segurança Ocupacional CSS">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="users" width="18"></i></span>
+            <span class="org-title">Gerência de Gestão de Pessoas</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Desenvolvimento Humano e Organizacional | DHO</div>
+            <div class="child-item">Coordenação de Remuneração e Carreira | CRC</div>
+            <div class="child-item">Coordenação de Saúde e Segurança Ocupacional | CSS</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência Financeira Coordenação Financeira CFI Coordenação Contábil CON Coordenação de Planej. Financeiro e Controladoria CPF">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="landmark" width="18"></i></span>
+            <span class="org-title">Gerência Financeira</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação Financeira | CFI</div>
+            <div class="child-item">Coordenação Contábil | CON</div>
+            <div class="child-item">Coordenação de Planej. Financeiro e Controladoria | CPF</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência de Suprimentos e Logística Coordenação de Licitação e Compras CLC Coordenação de Logística CLO Supervisão de Serviços Administrativos Coordenação de Planejamento e Gestão de Contratos e Convênios CPC">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="package" width="18"></i></span>
+            <span class="org-title">Gerência de Suprimentos e Logística</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Licitação e Compras | CLC</div>
+            <div class="coord-group">
+              <div class="child-item">Coordenação de Logística e Serviços Administrativos | CLO</div>
+              <div class="supervision-item">Supervisão de Serviços Administrativos</div>
+            </div>
+            <div class="child-item">Coordenação de Planejamento e Gestão de Contratos e Convênios | CPC</div>
+          </div>
+        </article>
+        <article class="org-card" data-search="Gerência de Tecnologia da Informação Coordenação de Sistemas de TI CSI Coordenação de Infraestrutura de TI CIN">
+          <button class="org-toggle" type="button" aria-expanded="false">
+            <span class="level-mark"><i data-lucide="monitor-cog" width="18"></i></span>
+            <span class="org-title">Gerência de Tecnologia da Informação</span>
+            <i class="chevron" data-lucide="chevron-down" width="19"></i>
+          </button>
+          <div class="org-children">
+            <div class="child-item">Coordenação de Sistemas de TI | CSI</div>
+            <div class="child-item">Coordenação de Infraestrutura de TI | CIN</div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- RODAPÉ: mesma logo do topo, só que centralizada -->
+  <footer>
+    <div class="footer-inner">
+      <a class="footer-logo-link" href="https://www.aguasdejoinville.com.br" target="_blank" rel="noopener noreferrer" aria-label="Visitar o site da Companhia Águas de Joinville">
+        <img class="footer-logo" src="assets/logo-CAJ.png" alt="Logotipo da Companhia Águas de Joinville">
+      </a>
+    </div>
+  </footer>
+
+  <!-- Carrega o arquivo que faz os cliques (abrir/fechar cards) e a busca funcionarem -->
+  <script src="js/script.js"></script>
+</body>
+</html>
